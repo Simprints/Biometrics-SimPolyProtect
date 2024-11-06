@@ -1,0 +1,35 @@
+title Enrolment Workflow
+
+participant Unprotected Biometric System
+participant PolyProtect
+database AuxData
+database RefData
+
+
+note over PolyProtect:Pre-configured parameters (with getter/setter):\n\n""private var **_OVERLAP**: Int = 2\nprivate var **_COEFFICIENTABSMAX**: Int = 100\nprivate var **_POLYNOMIALDEGREE**: Int  = 7""\n\nData classes:""\n\ndata class **secretAuxDataRecord**(\nval subjectId: String,\nval coefficients: IntArray,\nval exponents: IntArray)\n\ndata class **protectedTemplateRecord**(\nval subjectId: String,\nval protectedTemplate: DoubleArray)\n""\nMethods:""\n\nfun **generateSecretAuxDataRecord**(\nsubjectId: String):\nsecretAuxDataRecord\n\nfun **transformTemplate**(\nunprotectedTemplate: DoubleArray,\nsubjectSecretAuxData: secretAuxDataRecord):\n protectedTemplateRecord\n\nfun **computeScore**(array1: DoubleArray,\narray2: DoubleArray): Double""
+
+Unprotected Biometric System->PolyProtect:""**generateSecretAuxDataRecord**(subjectId)""
+PolyProtect-->Unprotected Biometric System:""**return**\nsecretAuxDataRecord(subjectId, coefficients, exponents)""
+
+
+group #2f2e7b While Loop #white [condition: check#1 == true or check#2 == true]
+
+Unprotected Biometric System->AuxData:<color:#blue>check#1</color>: ""coefficients"" already assigned to previously enrolled subject?
+AuxData-->Unprotected Biometric System:<color:#blue>check#1</color>: ""true"" or ""false""
+
+Unprotected Biometric System->AuxData:<color:#blue>check#2</color>: ""exponents"" already assigned to previously enrolled subject?
+AuxData-->Unprotected Biometric System:<color:#blue>check#2</color>: ""true"" or ""false""
+
+Unprotected Biometric System->PolyProtect:""**generateSecretAuxDataRecord**(subjectId)""
+PolyProtect-->Unprotected Biometric System:""**return**\nsecretAuxDataRecord(subjectId, coefficients, exponents)""
+end
+
+Unprotected Biometric System->AuxData:Save ""secretAuxDataRecord(subjectId, coefficients, exponents)"" 
+
+
+Unprotected Biometric System->PolyProtect:""**transformTemplate**(unprotectedTemplate,\nsubjectSecretAuxData)
+
+PolyProtect-->Unprotected Biometric System:""**return**\nprotectedTemplateRecord(subjectId, protectedTemplate)""
+
+
+Unprotected Biometric System->RefData:Save ""protectedTemplateRecord(subjectId, protectedTemplate)"" 

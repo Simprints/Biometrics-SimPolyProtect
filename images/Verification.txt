@@ -1,0 +1,28 @@
+title Verification Workflow
+
+participant Unprotected Biometric System
+participant PolyProtect
+database AuxData
+database RefData
+
+
+note over PolyProtect:Pre-configured parameters (with getter/setter):\n\n""private var **_OVERLAP**: Int = 2\nprivate var **_COEFFICIENTABSMAX**: Int = 100\nprivate var **_POLYNOMIALDEGREE**: Int  = 7""\n\nData classes:""\n\ndata class **secretAuxDataRecord**(\nval subjectId: String,\nval coefficients: IntArray,\nval exponents: IntArray)\n\ndata class **protectedTemplateRecord**(\nval subjectId: String,\nval protectedTemplate: DoubleArray)\n""\nMethods:""\n\nfun **generateSecretAuxDataRecord**(\nsubjectId: String):\nsecretAuxDataRecord\n\nfun **transformTemplate**(\nunprotectedTemplate: DoubleArray,\nsubjectSecretAuxData: secretAuxDataRecord):\n protectedTemplateRecord\n\nfun **computeScore**(array1: DoubleArray,\narray2: DoubleArray): Double""
+
+Unprotected Biometric System->AuxData: Given the ""subjectId"" to be verified, retrieve the corresponding ""secretAuxDataRecord"".
+
+AuxData-->Unprotected Biometric System: **return**\n""secretAuxDataRecord(subjectId, coefficients, exponents)"" 
+
+
+Unprotected Biometric System->PolyProtect:""**transformTemplate**(unprotectedQueryTemplate,\nsubjectSecretAuxData)
+
+PolyProtect-->Unprotected Biometric System:""**return**\nprotectedTemplateRecord(subjectId, protectedQueryTemplate)""
+
+
+Unprotected Biometric System->RefData: Given the ""subjectId"" to be verified, retrieve the corresponding ""protectedTemplateRecord"".
+
+RefData-->Unprotected Biometric System: **return**\n""protectedTemplateRecord(subjectId, protectedTemplate)"" 
+
+
+Unprotected Biometric System->PolyProtect:""**computeScore**(protectedQueryTemplate,\nprotectedReferenceTemplate)
+
+PolyProtect-->Unprotected Biometric System:""**return**\nDouble""
