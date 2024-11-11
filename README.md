@@ -42,7 +42,6 @@ In this section we provide a description of the ```PolyProtect``` class.
 
 **NOTE 2**: The size of the protected templates depends on ```_POLYNOMIALDEGREE``` and ```_OVERLAP```.
 
-
 # Workflow
 
 In this section we report the sequence diagrams are included for integrating PolyProtect in the opserations of enrolment, verification, and indentification.
