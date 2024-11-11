@@ -4,6 +4,8 @@ plugins {
     id("org.jetbrains.kotlin.plugin.parcelize") version "2.1.0-RC"
 }
 
+version = "2024.4.0"
+
 android {
     namespace = "com.simprints.biometrics_simpolyprotect"
     compileSdk = 34
