@@ -50,11 +50,13 @@ class PolyProtect {
             }
 
         fun transformTemplate(unprotectedTemplate: DoubleArray,
-            subjectSecretAuxData: secretAuxDataRecord
+                              subjectSecretAuxData: secretAuxDataRecord
         ): protectedTemplateRecord {
 
             val (_, c, e) = subjectSecretAuxData // For convenience
             assert(e.size == c.size) { "Auxiliary data sizes must be equal." }
+
+            assert(e.size == POLYNOMIALDEGREE) { "Auxiliary data sizes must be equal to PolyProtect.POLYNOMIALDEGREE." }
 
             val stepSize = e.size - OVERLAP
             val eIndices = e.indices
@@ -108,7 +110,9 @@ class PolyProtect {
             // Calculate cosine similarity
             val cosineSimilarity = dotProduct / (magnitudeA * magnitudeB)
             // Calculate cosine distance
-            return (2.0-1.0 * cosineSimilarity)/2
+            val cosineDistance = 1 - cosineSimilarity
+
+            return (2.0-1.0*cosineDistance)/2
         }
     }
 }
