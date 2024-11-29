@@ -2,6 +2,14 @@ package com.simprints.biometrics.polyprotect
 
 import kotlin.math.sqrt
 
+/**
+ * Calculates a similarity score based on cosine distance.
+ *
+ * @param array1 first biometric template
+ * @param array2 another biometric template
+ *
+ * @return a value in in the `[0,1]` range
+ */
 fun computeSimilarityScore(
     array1: DoubleArray,
     array2: DoubleArray,

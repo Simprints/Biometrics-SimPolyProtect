@@ -2,6 +2,17 @@ package com.simprints.biometrics.polyprotect
 
 import kotlin.math.pow
 
+/**
+ * The main entry point and configuration holder for the PolyProtect algorithm.
+ *
+ * @param polynomialDegree degree of the polynomial used in the PolyProtect transformation. Must be in `[5;14]` range.
+ *
+ * @param coefficientAbsMax range limit for the coefficients of the polynomial used in the PolyProtect transformation.
+ *          The coefficients will be drawn from the `[-coefficientAbsMax, coefficientAbsMax]` range excluding 0.
+ *
+ * @param overlap of the intervals of the unprotected template to transform using the PolyProtect polynomial transformation.
+ *          It can go from 0 to `polynomialDegree - 1`. The safest options would be: {0, 1, 2, 3}.
+ */
 class PolyProtect(
     private val polynomialDegree: Int = POLYNOMIAL_DEGREE_DEFAULT,
     private val coefficientAbsMax: Int = COEFFICIENT_ABS_MAX_DEFAULT,
@@ -20,6 +31,17 @@ class PolyProtect(
         }
     }
 
+    /**
+     * Applies PolyProtect transformation to the provided unprotected template
+     * using the accompanying `AuxData` values
+     *
+     * **NOTE**: The size of the protected templates depends on `polynomialDegree` and `overlap`.
+     *
+     * @param unprotectedTemplate
+     * @param auxData a set of coefficients and exponents associated with specific biometric record
+     *
+     * @return protected template
+     */
     fun transformTemplate(
         unprotectedTemplate: DoubleArray,
         auxData: AuxData
@@ -50,6 +72,10 @@ class PolyProtect(
         return protectedTemplate.toDoubleArray()
     }
 
+    /**
+     * @return Randomly generated coefficients and exponents (auxiliary data) according
+     *      to the configured `polynomialDegree` and `coefficientAbsMax` values.
+     */
     fun generateAuxData(): AuxData {
         // Create a list that excludes 0, combining the ranges (-coefficientAbsMax to -1) and (1 to coefficientAbsMax)
         val coefficientRange =
