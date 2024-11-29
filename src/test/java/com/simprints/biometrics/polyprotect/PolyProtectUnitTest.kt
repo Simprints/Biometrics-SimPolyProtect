@@ -1,7 +1,5 @@
-package com.simprints.biometrics_simpolyprotect
+package com.simprints.biometrics.polyprotect
 
-import biometrics_simpolyprotect.AuxData
-import biometrics_simpolyprotect.PolyProtect
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

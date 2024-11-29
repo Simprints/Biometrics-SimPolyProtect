@@ -1,7 +1,5 @@
-package com.simprints.biometrics_simpolyprotect
+package com.simprints.biometrics.polyprotect
 
-import biometrics_simpolyprotect.PolyProtect
-import biometrics_simpolyprotect.computeSimilarityScore
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import kotlin.random.Random

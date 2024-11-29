@@ -1,4 +1,4 @@
-package biometrics_simpolyprotect
+package com.simprints.biometrics.polyprotect
 
 import kotlin.math.sqrt
 

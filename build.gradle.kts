@@ -1,12 +1,11 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id("org.jetbrains.kotlin.plugin.parcelize") version "2.1.0-RC"
     `maven-publish`
 }
 
-val projectGroupId = "com.simprints"
-val projectArtifactId = "biometrics_simpolyprotect"
+val projectGroupId = "com.simprints.biometrics"
+val projectArtifactId = "polyprotect"
 val projectVersion = "2024.4.0"
 
 android {
@@ -25,12 +24,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }
 
 publishing {
