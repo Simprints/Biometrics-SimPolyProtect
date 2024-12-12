@@ -37,39 +37,44 @@ class PolyProtect(
      *
      * **NOTE**: The size of the protected templates depends on `polynomialDegree` and `overlap`.
      *
-     * @param unprotectedTemplate
+     * @param unprotectedTemplateByteArray
      * @param auxData a set of coefficients and exponents associated with specific biometric record
      *
      * @return protected template
      */
     fun transformTemplate(
-        unprotectedTemplate: DoubleArray,
+        unprotectedTemplate: ByteArray,
         auxData: AuxData
-    ): DoubleArray {
+    ): ByteArray {
         val (coefficients, exponents) = auxData // For convenience
         require(exponents.size == coefficients.size) { "Auxiliary data sizes must be equal." }
-        require(exponents.size == polynomialDegree) {
+        require(Utils.byteArrayToIntArray(exponents).size == polynomialDegree) {
             "Auxiliary data sizes must be equal to polynomial degree."
         }
 
-        val stepSize = exponents.size - overlap
+        // Converting from ByteArray
+        val unprotectedTemplateDoubleArray = Utils.byteArrayToDoubleArray(unprotectedTemplate)
+        val coefficientsIntArray = Utils.byteArrayToIntArray(coefficients)
+        val exponentsIntArray = Utils.byteArrayToIntArray(exponents)
+
+        val stepSize = exponentsIntArray.size - overlap
 
         val protectedTemplate = mutableListOf<Double>()
-        for (templateIndex in 0..(unprotectedTemplate.lastIndex - overlap) step stepSize) {
-            val s = exponents.indices.map { i ->
+        for (templateIndex in 0..(unprotectedTemplateDoubleArray.lastIndex - overlap) step stepSize) {
+            val s = exponentsIntArray.indices.map { i ->
                 // If the target element is out of bounds, consider it 0 since 0^n==0
                 // This would be the same as padding the provided array up to certain size
-                if (templateIndex + i > unprotectedTemplate.lastIndex) {
+                if (templateIndex + i > unprotectedTemplateDoubleArray.lastIndex) {
                     0.0
                 } else {
-                    unprotectedTemplate[templateIndex + i]
-                        .pow(exponents[i])
-                        .times(coefficients[i])
+                    unprotectedTemplateDoubleArray[templateIndex + i]
+                        .pow(exponentsIntArray[i])
+                        .times(coefficientsIntArray[i])
                 }
             }.sum()
             protectedTemplate.add(s)
         }
-        return protectedTemplate.toDoubleArray()
+        return Utils.doubleArrayToByteArray(protectedTemplate.toDoubleArray())
     }
 
     /**
@@ -90,7 +95,7 @@ class PolyProtect(
         // Shuffle the list randomly
         val exponents = exponentRange.shuffled().toIntArray()
 
-        return AuxData(coefficients, exponents)
+        return AuxData(Utils.intArrayToByteArray(coefficients), Utils.intArrayToByteArray(exponents))
     }
 
     companion object {

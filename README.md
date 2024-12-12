@@ -16,7 +16,7 @@ The output of this transformation is the protected template.
 
 # Workflow
 
-In this section we report the sequence diagrams are included for integrating PolyProtect in the opserations of enrolment, verification, and indentification.
+In this section we report the sequence diagrams are included for integrating PolyProtect in the operations of enrolment, verification, and identification.
 
 ## Enrolment
 

@@ -11,10 +11,13 @@ import kotlin.math.sqrt
  * @return a value in in the `[0,1]` range
  */
 fun computeSimilarityScore(
-    array1: DoubleArray,
-    array2: DoubleArray,
+    array1ByteArray: ByteArray,
+    array2ByteArray: ByteArray,
 ): Double {
-    require(array1.size == array2.size) { "Arrays must be of the same size." }
+    require(array1ByteArray.size == array2ByteArray.size) { "Arrays must be of the same size." }
+
+    val array1 = Utils.byteArrayToDoubleArray(array1ByteArray)
+    val array2 = Utils.byteArrayToDoubleArray(array2ByteArray)
 
     // Calculate the dot product of array1 and array2
     val dotProduct = array1.zip(array2) { x, y -> x * y }.sum()
