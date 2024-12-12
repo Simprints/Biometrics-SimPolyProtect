@@ -21,19 +21,19 @@ class PolyProtectUnitTest {
         val secrets1 = polyProtect.generateAuxData()
 
         assertEquals(
-            "Exponents count is same as provided polynomial degree", 7, secrets1.exponents.size
+            "Exponents count is same as provided polynomial degree", 7, Utils.byteArrayToIntArray(secrets1.exponents).size
         )
         assertTrue(
             "The exponents should include values from 1 to PolyProtect.POLYNOMIALDEGREE.",
-            secrets1.exponents.sortedArray().contentEquals(IntArray(7) { it + 1 })
+            Utils.byteArrayToIntArray(secrets1.exponents).sortedArray().contentEquals(IntArray(7) { it + 1 })
         )
 
         assertEquals(
-            "Coefficient count is same as provided polynomial degree", 7, secrets1.coefficients.size
+            "Coefficient count is same as provided polynomial degree", 7, Utils.byteArrayToIntArray(secrets1.coefficients).size
         )
         assertTrue("The coefficient values should not be outside the allowed range",
-            secrets1.coefficients.all { it in -100..100 })
-        assertTrue("The coefficient values must not be 0", secrets1.coefficients.none { it == 0 })
+            Utils.byteArrayToIntArray(secrets1.coefficients).all { it in -100..100 })
+        assertTrue("The coefficient values must not be 0", Utils.byteArrayToIntArray(secrets1.coefficients).none { it == 0 })
 
     }
 
@@ -45,7 +45,7 @@ class PolyProtectUnitTest {
         val exponents = intArrayOf(1, 5, 3, 4, 6, 2, 7)
 
         val subjectSecretAuxData = AuxData(
-            coefficients = coefficients, exponents = exponents
+            coefficients = Utils.intArrayToByteArray(coefficients), exponents = Utils.intArrayToByteArray(exponents)
         )
 
         // Custom parameters (relevant to the generation of secret auxiliary data record)
@@ -56,9 +56,12 @@ class PolyProtectUnitTest {
         )
 
         // Creation of two unprotected templates (randomly generated)
-        val unprotectedTemplate = DoubleArray(512) { Random.nextDouble() - 0.5 }
+        val unprotectedTemplateDoubleArray = DoubleArray(512) { Random.nextDouble() - 0.5 }
 
-        // PolyProtect trandformation: the unprotected templates are transformed using the
+        // Transformation of unprotected template into ByteArray
+        val unprotectedTemplate = Utils.doubleArrayToByteArray(unprotectedTemplateDoubleArray)
+
+        // PolyProtect transformation: the unprotected templates are transformed using the
         // subject-specific secret auxiliary data
         val protectedTemplate = polyProtect.transformTemplate(
             unprotectedTemplate = unprotectedTemplate, auxData = subjectSecretAuxData

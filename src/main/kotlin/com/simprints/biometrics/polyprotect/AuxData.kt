@@ -8,6 +8,6 @@ package com.simprints.biometrics.polyprotect
  * @param exponents of a polynomial function
  */
 data class AuxData(
-    val coefficients: IntArray,
-    val exponents: IntArray,
+    val coefficients: ByteArray,
+    val exponents: ByteArray,
 )

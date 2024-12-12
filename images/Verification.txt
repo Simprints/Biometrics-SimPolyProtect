@@ -6,22 +6,21 @@ database AuxData
 database RefData
 
 
-note over PolyProtect:Pre-configured parameters (with getter/setter):\n\n""private var **_OVERLAP**: Int = 2\nprivate var **_COEFFICIENTABSMAX**: Int = 100\nprivate var **_POLYNOMIALDEGREE**: Int  = 7""\n\nData classes:""\n\ndata class **secretAuxDataRecord**(\nval subjectId: String,\nval coefficients: IntArray,\nval exponents: IntArray)\n\ndata class **protectedTemplateRecord**(\nval subjectId: String,\nval protectedTemplate: DoubleArray)\n""\nMethods:""\n\nfun **generateSecretAuxDataRecord**(\nsubjectId: String):\nsecretAuxDataRecord\n\nfun **transformTemplate**(\nunprotectedTemplate: DoubleArray,\nsubjectSecretAuxData: secretAuxDataRecord):\n protectedTemplateRecord\n\nfun **computeScore**(array1: DoubleArray,\narray2: DoubleArray): Double""
+note over PolyProtect:Pre-configured parameters (with getter/setter):\n\n""private var **_OVERLAP**: Int = 2\nprivate var **_COEFFICIENTABSMAX**: Int = 100\nprivate var **_POLYNOMIALDEGREE**: Int  = 7""\n\nData classes:""\n\ndata class **AuxData**(\nval coefficients: ByteArray,\nval exponents: ByteArray)\n""\nMethods:""\n\nfun **generateAuxData**():\n AuxData\n\nfun **transformTemplate**(\nunprotectedTemplate: ByteArray,\nauxData: AuxData):\n ByteArray\n\nfun **computeSimilarityScore**(array1: ByteArray,\narray2: ByteArray):\n Double""
 
-Unprotected Biometric System->AuxData: Given the ""subjectId"" to be verified, retrieve the corresponding ""secretAuxDataRecord"".
+Unprotected Biometric System->AuxData: Given the ""subjectId"" to be verified,\n retrieve the corresponding ""AuxData"".
 
-AuxData-->Unprotected Biometric System: **return**\n""secretAuxDataRecord(subjectId, coefficients, exponents)"" 
-
-
-Unprotected Biometric System->PolyProtect:""**transformTemplate**(unprotectedQueryTemplate,\nsubjectSecretAuxData)
-
-PolyProtect-->Unprotected Biometric System:""**return**\nprotectedTemplateRecord(subjectId, protectedQueryTemplate)""
+AuxData-->Unprotected Biometric System: **return**\n""AuxData""
 
 
-Unprotected Biometric System->RefData: Given the ""subjectId"" to be verified, retrieve the corresponding ""protectedTemplateRecord"".
+Unprotected Biometric System->PolyProtect:""**transformTemplate**(unprotectedQueryTemplate,\nAuxData)
 
-RefData-->Unprotected Biometric System: **return**\n""protectedTemplateRecord(subjectId, protectedTemplate)"" 
+PolyProtect-->Unprotected Biometric System:""**return** ByteArray"" (protected query template)
 
+
+Unprotected Biometric System->RefData: Given the ""subjectId"" to be verified,\nretrieve the corresponding\nprotected reference template.
+
+RefData-->Unprotected Biometric System: **return**\n""ByteArray"" (protected reference template)
 
 Unprotected Biometric System->PolyProtect:""**computeScore**(protectedQueryTemplate,\nprotectedReferenceTemplate)
 
