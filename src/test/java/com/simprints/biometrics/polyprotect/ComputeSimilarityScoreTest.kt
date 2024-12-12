@@ -13,8 +13,8 @@ class ComputeSimilarityScoreTest {
         val unprotectedTemplateDoubleArray1 = DoubleArray(512) { Random.nextDouble() - 0.5 }
         val unprotectedTemplateDoubleArray2 = DoubleArray(512) { Random.nextDouble() - 0.5 }
 
-        val unprotectedTemplate1 = Utils.doubleArrayToByteArray(unprotectedTemplateDoubleArray1)
-        val unprotectedTemplate2 = Utils.doubleArrayToByteArray(unprotectedTemplateDoubleArray2)
+        val unprotectedTemplate1 = ArrayConverter.doubleArrayToByteArray(unprotectedTemplateDoubleArray1)
+        val unprotectedTemplate2 = ArrayConverter.doubleArrayToByteArray(unprotectedTemplateDoubleArray2)
 
 
         // Custom parameters

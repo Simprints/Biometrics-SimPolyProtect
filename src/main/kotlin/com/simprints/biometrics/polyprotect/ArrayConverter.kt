@@ -1,7 +1,7 @@
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
-object Utils {
+object ArrayConverter {
     /**
      * Converts a DoubleArray to a ByteArray.
      *

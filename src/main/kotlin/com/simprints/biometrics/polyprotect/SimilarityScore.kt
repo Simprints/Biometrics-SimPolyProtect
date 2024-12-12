@@ -16,8 +16,8 @@ fun computeSimilarityScore(
 ): Double {
     require(array1ByteArray.size == array2ByteArray.size) { "Arrays must be of the same size." }
 
-    val array1 = Utils.byteArrayToDoubleArray(array1ByteArray)
-    val array2 = Utils.byteArrayToDoubleArray(array2ByteArray)
+    val array1 = ArrayConverter.byteArrayToDoubleArray(array1ByteArray)
+    val array2 = ArrayConverter.byteArrayToDoubleArray(array2ByteArray)
 
     // Calculate the dot product of array1 and array2
     val dotProduct = array1.zip(array2) { x, y -> x * y }.sum()

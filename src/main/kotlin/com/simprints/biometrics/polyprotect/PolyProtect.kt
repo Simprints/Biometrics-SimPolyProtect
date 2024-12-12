@@ -48,14 +48,14 @@ class PolyProtect(
     ): ByteArray {
         val (coefficients, exponents) = auxData // For convenience
         require(exponents.size == coefficients.size) { "Auxiliary data sizes must be equal." }
-        require(Utils.byteArrayToIntArray(exponents).size == polynomialDegree) {
+        require(ArrayConverter.byteArrayToIntArray(exponents).size == polynomialDegree) {
             "Auxiliary data sizes must be equal to polynomial degree."
         }
 
         // Converting from ByteArray
-        val unprotectedTemplateDoubleArray = Utils.byteArrayToDoubleArray(unprotectedTemplate)
-        val coefficientsIntArray = Utils.byteArrayToIntArray(coefficients)
-        val exponentsIntArray = Utils.byteArrayToIntArray(exponents)
+        val unprotectedTemplateDoubleArray = ArrayConverter.byteArrayToDoubleArray(unprotectedTemplate)
+        val coefficientsIntArray = ArrayConverter.byteArrayToIntArray(coefficients)
+        val exponentsIntArray = ArrayConverter.byteArrayToIntArray(exponents)
 
         val stepSize = exponentsIntArray.size - overlap
 
@@ -74,7 +74,7 @@ class PolyProtect(
             }.sum()
             protectedTemplate.add(s)
         }
-        return Utils.doubleArrayToByteArray(protectedTemplate.toDoubleArray())
+        return ArrayConverter.doubleArrayToByteArray(protectedTemplate.toDoubleArray())
     }
 
     /**
@@ -95,7 +95,7 @@ class PolyProtect(
         // Shuffle the list randomly
         val exponents = exponentRange.shuffled().toIntArray()
 
-        return AuxData(Utils.intArrayToByteArray(coefficients), Utils.intArrayToByteArray(exponents))
+        return AuxData(ArrayConverter.intArrayToByteArray(coefficients), ArrayConverter.intArrayToByteArray(exponents))
     }
 
     companion object {
