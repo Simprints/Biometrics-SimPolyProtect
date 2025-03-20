@@ -37,7 +37,7 @@ class PolyProtect(
      *
      * **NOTE**: The size of the protected templates depends on `polynomialDegree` and `overlap`.
      *
-     * @param unprotectedTemplateByteArray
+     * @param unprotectedTemplate byte stream representation of template's array of FLOAT32 values
      * @param auxData a set of coefficients and exponents associated with specific biometric record
      *
      * @return protected template
@@ -48,33 +48,32 @@ class PolyProtect(
     ): ByteArray {
         val (coefficients, exponents) = auxData // For convenience
         require(exponents.size == coefficients.size) { "Auxiliary data sizes must be equal." }
-        require(ArrayConverter.byteArrayToIntArray(exponents).size == polynomialDegree) {
+        require(exponents.size == polynomialDegree) {
             "Auxiliary data sizes must be equal to polynomial degree."
         }
 
-        // Converting from ByteArray
-        val unprotectedTemplateDoubleArray = ArrayConverter.byteArrayToDoubleArray(unprotectedTemplate)
-        val coefficientsIntArray = ArrayConverter.byteArrayToIntArray(coefficients)
-        val exponentsIntArray = ArrayConverter.byteArrayToIntArray(exponents)
+        // Converting from ByteArray to Floats (as per template spec) and to doubles for more precision during calculations
+        val unprotectedTemplateDoubleArray =
+            ArrayConverter.byteArrayToFloatArray(unprotectedTemplate).map { it.toDouble() }
 
-        val stepSize = exponentsIntArray.size - overlap
+        val stepSize = exponents.size - overlap
 
-        val protectedTemplate = mutableListOf<Double>()
+        val protectedTemplate = mutableListOf<Float>()
         for (templateIndex in 0..(unprotectedTemplateDoubleArray.lastIndex - overlap) step stepSize) {
-            val s = exponentsIntArray.indices.map { i ->
+            val s = exponents.indices.sumOf { i ->
                 // If the target element is out of bounds, consider it 0 since 0^n==0
                 // This would be the same as padding the provided array up to certain size
                 if (templateIndex + i > unprotectedTemplateDoubleArray.lastIndex) {
                     0.0
                 } else {
                     unprotectedTemplateDoubleArray[templateIndex + i]
-                        .pow(exponentsIntArray[i])
-                        .times(coefficientsIntArray[i])
+                        .pow(exponents[i])
+                        .times(coefficients[i])
                 }
-            }.sum()
-            protectedTemplate.add(s)
+            }
+            protectedTemplate.add(s.toFloat()) // We can lose some precision now
         }
-        return ArrayConverter.doubleArrayToByteArray(protectedTemplate.toDoubleArray())
+        return ArrayConverter.floatArrayToByteArray(protectedTemplate.toFloatArray())
     }
 
     /**
@@ -95,7 +94,7 @@ class PolyProtect(
         // Shuffle the list randomly
         val exponents = exponentRange.shuffled().toIntArray()
 
-        return AuxData(ArrayConverter.intArrayToByteArray(coefficients), ArrayConverter.intArrayToByteArray(exponents))
+        return AuxData(coefficients, exponents)
     }
 
     companion object {

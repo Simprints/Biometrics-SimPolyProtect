@@ -1,52 +1,32 @@
+package com.simprints.biometrics.polyprotect
+
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
-object ArrayConverter {
+internal object ArrayConverter {
     /**
-     * Converts a DoubleArray to a ByteArray.
+     * Converts a FloatArray to a ByteArray.
      *
-     * @param doubleArray The DoubleArray to convert.
-     * @return A ByteArray representing the DoubleArray.
+     * @param floatArray The float array to convert.
+     * @return A byte stream representing the contents of float array.
      */
-    fun doubleArrayToByteArray(doubleArray: DoubleArray): ByteArray {
-        val byteBuffer = ByteBuffer.allocate(doubleArray.size * 8).order(ByteOrder.nativeOrder())
-        byteBuffer.asDoubleBuffer().put(doubleArray)
+    internal fun floatArrayToByteArray(floatArray: FloatArray): ByteArray {
+        val byteBuffer =
+            ByteBuffer.allocate(floatArray.size * Float.SIZE_BYTES).order(ByteOrder.nativeOrder())
+        byteBuffer.asFloatBuffer().put(floatArray)
         return byteBuffer.array()
     }
 
     /**
-     * Converts a ByteArray back to a DoubleArray.
+     * Converts a ByteArray back to a FloatArray.
      *
-     * @param byteArray The ByteArray to convert.
-     * @return A DoubleArray reconstructed from the ByteArray.
+     * @param byteArray The byte stream representation of float array
+     * @return A float array reconstructed from the byte stream.
      */
-    fun byteArrayToDoubleArray(byteArray: ByteArray): DoubleArray {
+    internal fun byteArrayToFloatArray(byteArray: ByteArray): FloatArray {
         val byteBuffer = ByteBuffer.wrap(byteArray).order(ByteOrder.nativeOrder())
-        val doubleBuffer = byteBuffer.asDoubleBuffer()
-        return DoubleArray(doubleBuffer.remaining()).apply { doubleBuffer.get(this) }
+        val floatBuffer = byteBuffer.asFloatBuffer()
+        return FloatArray(floatBuffer.remaining()).apply { floatBuffer.get(this) }
     }
 
-    /**
-     * Converts an IntArray to a ByteArray.
-     *
-     * @param intArray The IntArray to convert.
-     * @return A ByteArray representing the IntArray.
-     */
-    fun intArrayToByteArray(intArray: IntArray): ByteArray {
-        val byteBuffer = ByteBuffer.allocate(intArray.size * 4).order(ByteOrder.nativeOrder())
-        byteBuffer.asIntBuffer().put(intArray)
-        return byteBuffer.array()
-    }
-
-    /**
-     * Converts a ByteArray back to an IntArray.
-     *
-     * @param byteArray The ByteArray to convert.
-     * @return An IntArray reconstructed from the ByteArray.
-     */
-    fun byteArrayToIntArray(byteArray: ByteArray): IntArray {
-        val byteBuffer = ByteBuffer.wrap(byteArray).order(ByteOrder.nativeOrder())
-        val intBuffer = byteBuffer.asIntBuffer()
-        return IntArray(intBuffer.remaining()).apply { intBuffer.get(this) }
-    }
 }

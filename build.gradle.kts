@@ -6,25 +6,25 @@ plugins {
 
 val projectGroupId = "com.simprints.biometrics"
 val projectArtifactId = "polyprotect"
-val projectVersion = "2024.4.2"
+val projectVersion = "2025.1.1"
 
 android {
     namespace = "$projectGroupId.$projectArtifactId"
-    compileSdk = 34
+    compileSdk = 35
     defaultConfig {
-        minSdk = 24
+        minSdk = 23
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
 dependencies {
-    testImplementation(libs.junit)
+    testImplementation(libs.testing.junit)
 }
 
 publishing {
