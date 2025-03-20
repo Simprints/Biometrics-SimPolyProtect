@@ -1,3 +1,5 @@
+package com.simprints.biometrics.polyprotect
+
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
@@ -26,27 +28,4 @@ object ArrayConverter {
         return DoubleArray(doubleBuffer.remaining()).apply { doubleBuffer.get(this) }
     }
 
-    /**
-     * Converts an IntArray to a ByteArray.
-     *
-     * @param intArray The IntArray to convert.
-     * @return A ByteArray representing the IntArray.
-     */
-    fun intArrayToByteArray(intArray: IntArray): ByteArray {
-        val byteBuffer = ByteBuffer.allocate(intArray.size * 4).order(ByteOrder.nativeOrder())
-        byteBuffer.asIntBuffer().put(intArray)
-        return byteBuffer.array()
-    }
-
-    /**
-     * Converts a ByteArray back to an IntArray.
-     *
-     * @param byteArray The ByteArray to convert.
-     * @return An IntArray reconstructed from the ByteArray.
-     */
-    fun byteArrayToIntArray(byteArray: ByteArray): IntArray {
-        val byteBuffer = ByteBuffer.wrap(byteArray).order(ByteOrder.nativeOrder())
-        val intBuffer = byteBuffer.asIntBuffer()
-        return IntArray(intBuffer.remaining()).apply { intBuffer.get(this) }
-    }
 }
