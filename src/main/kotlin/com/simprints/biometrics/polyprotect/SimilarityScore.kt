@@ -5,19 +5,19 @@ import kotlin.math.sqrt
 /**
  * Calculates a similarity score based on cosine distance.
  *
- * @param array1 first biometric template
- * @param array2 another biometric template
+ * @param template1  byte stream representation of the first template's array of FLOAT32 values
+ * @param template2  byte stream representation of the second template's array of FLOAT32 values
  *
  * @return a value in in the `[0,1]` range
  */
 fun computeSimilarityScore(
-    array1ByteArray: ByteArray,
-    array2ByteArray: ByteArray,
+    template1: ByteArray,
+    template2: ByteArray,
 ): Double {
-    require(array1ByteArray.size == array2ByteArray.size) { "Arrays must be of the same size." }
+    require(template1.size == template2.size) { "Arrays must be of the same size." }
 
-    val array1 = ArrayConverter.byteArrayToDoubleArray(array1ByteArray)
-    val array2 = ArrayConverter.byteArrayToDoubleArray(array2ByteArray)
+    val array1 = ArrayConverter.byteArrayToFloatArray(template1)
+    val array2 = ArrayConverter.byteArrayToFloatArray(template2)
 
     // Calculate the dot product of array1 and array2
     val dotProduct = array1.zip(array2) { x, y -> x * y }.sum()

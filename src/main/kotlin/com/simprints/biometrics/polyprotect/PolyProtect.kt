@@ -37,7 +37,7 @@ class PolyProtect(
      *
      * **NOTE**: The size of the protected templates depends on `polynomialDegree` and `overlap`.
      *
-     * @param unprotectedTemplateByteArray
+     * @param unprotectedTemplate byte stream representation of template's array of FLOAT32 values
      * @param auxData a set of coefficients and exponents associated with specific biometric record
      *
      * @return protected template
@@ -52,13 +52,13 @@ class PolyProtect(
             "Auxiliary data sizes must be equal to polynomial degree."
         }
 
-        // Converting from ByteArray
+        // Converting from ByteArray to Floats (as per template spec) and to doubles for more precision during calculations
         val unprotectedTemplateDoubleArray =
-            ArrayConverter.byteArrayToDoubleArray(unprotectedTemplate)
+            ArrayConverter.byteArrayToFloatArray(unprotectedTemplate).map { it.toDouble() }
 
         val stepSize = exponents.size - overlap
 
-        val protectedTemplate = mutableListOf<Double>()
+        val protectedTemplate = mutableListOf<Float>()
         for (templateIndex in 0..(unprotectedTemplateDoubleArray.lastIndex - overlap) step stepSize) {
             val s = exponents.indices.sumOf { i ->
                 // If the target element is out of bounds, consider it 0 since 0^n==0
@@ -71,9 +71,9 @@ class PolyProtect(
                         .times(coefficients[i])
                 }
             }
-            protectedTemplate.add(s)
+            protectedTemplate.add(s.toFloat()) // We can lose some precision now
         }
-        return ArrayConverter.doubleArrayToByteArray(protectedTemplate.toDoubleArray())
+        return ArrayConverter.floatArrayToByteArray(protectedTemplate.toFloatArray())
     }
 
     /**

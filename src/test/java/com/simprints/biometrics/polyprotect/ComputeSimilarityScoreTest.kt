@@ -10,11 +10,11 @@ class ComputeSimilarityScoreTest {
     @Test
     fun `similarity between two protected templates should be between 0 and 1`() {
         // Creation of two unprotected templates (randomly generated)
-        val unprotectedTemplateDoubleArray1 = DoubleArray(512) { Random.nextDouble() - 0.5 }
-        val unprotectedTemplateDoubleArray2 = DoubleArray(512) { Random.nextDouble() - 0.5 }
+        val unprotectedTemplateArray1 = FloatArray(512) { Random.nextFloat() - 0.5f }
+        val unprotectedTemplateArray2 = FloatArray(512) { Random.nextFloat() - 0.5f }
 
-        val unprotectedTemplate1 = ArrayConverter.doubleArrayToByteArray(unprotectedTemplateDoubleArray1)
-        val unprotectedTemplate2 = ArrayConverter.doubleArrayToByteArray(unprotectedTemplateDoubleArray2)
+        val unprotectedTemplate1 = ArrayConverter.floatArrayToByteArray(unprotectedTemplateArray1)
+        val unprotectedTemplate2 = ArrayConverter.floatArrayToByteArray(unprotectedTemplateArray2)
 
 
         // Custom parameters

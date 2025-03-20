@@ -61,11 +61,11 @@ class PolyProtectUnitTest {
         )
 
         // Creation of two unprotected templates (randomly generated)
-        val unprotectedTemplateDoubleArray = DoubleArray(512) { Random.nextDouble() - 0.5 }
+        val unprotectedTemplateDoubleArray = FloatArray(512) { Random.nextFloat() - 0.5f }
 
         // Transformation of unprotected template into ByteArray
         val unprotectedTemplate =
-            ArrayConverter.doubleArrayToByteArray(unprotectedTemplateDoubleArray)
+            ArrayConverter.floatArrayToByteArray(unprotectedTemplateDoubleArray)
 
         // PolyProtect transformation: the unprotected templates are transformed using the
         // subject-specific secret auxiliary data
