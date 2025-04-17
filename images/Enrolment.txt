@@ -6,7 +6,6 @@ database AuxData
 database RefData
 
 
-note over PolyProtect:Pre-configured parameters (with getter/setter):\n\n""private var **_OVERLAP**: Int = 2\nprivate var **_COEFFICIENTABSMAX**: Int = 100\nprivate var **_POLYNOMIALDEGREE**: Int  = 7""\n\nData classes:""\n\ndata class **AuxData**(\nval coefficients: ByteArray,\nval exponents: ByteArray)\n""\nMethods:""\n\nfun **generateAuxData**():\n AuxData\n\nfun **transformTemplate**(\nunprotectedTemplate: ByteArray,\nauxData: AuxData):\n ByteArray\n\nfun **computeSimilarityScore**(array1: ByteArray,\narray2: ByteArray):\n Double""
 Unprotected Biometric System->PolyProtect:""**generateAuxData**()""
 PolyProtect-->Unprotected Biometric System:""**return**\n AuxData(coefficients, exponents)""
 
@@ -28,7 +27,7 @@ Unprotected Biometric System->AuxData:Save ""AuxData""
 
 Unprotected Biometric System->PolyProtect:""**transformTemplate**(unprotectedTemplate, AuxData)
 
-PolyProtect-->Unprotected Biometric System:""**return**\n ByteArray"" (protected template)
+PolyProtect-->Unprotected Biometric System:""**return**\n FloatArray"" (protected template)
 
 
 Unprotected Biometric System->RefData:Save protected template

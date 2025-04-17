@@ -1,36 +1,25 @@
-title Identification Workflow
+title Verification Workflow
 
 participant Unprotected Biometric System
 participant PolyProtect
 database AuxData
 database RefData
 
-note over PolyProtect:Pre-configured parameters (with getter/setter):\n\n""private var **_OVERLAP**: Int = 2\nprivate var **_COEFFICIENTABSMAX**: Int = 100\nprivate var **_POLYNOMIALDEGREE**: Int  = 7""\n\nData classes:""\n\ndata class **AuxData**(\nval coefficients: ByteArray,\nval exponents: ByteArray)\n""\nMethods:""\n\nfun **generateAuxData**():\n AuxData\n\nfun **transformTemplate**(\nunprotectedTemplate: ByteArray,\nauxData: AuxData):\n ByteArray\n\nfun **computeSimilarityScore**(array1: ByteArray,\narray2: ByteArray):\n Double""
-note over Unprotected Biometric System: Create empty list\n""identificationList""\nfor identification\nscores
 
-group #2f2e7b For Loop #white [condition: for subjectId in enrolledSubjectIds]
-
-Unprotected Biometric System->AuxData: Given the ""subjectId"" to be compared, retrieve the corresponding ""AuxData""
+Unprotected Biometric System->AuxData: Given the ""subjectId"" to be verified,\n retrieve the corresponding ""AuxData"".
 
 AuxData-->Unprotected Biometric System: **return**\n""AuxData""
 
-Unprotected Biometric System->PolyProtect:""**transformTemplate**(unprotectedQueryTemplate, AuxData)
 
-PolyProtect-->Unprotected Biometric System:""**return**\nByteArray"" (protected query template)
+Unprotected Biometric System->PolyProtect:""**transformTemplate**(unprotectedQueryTemplate,\nAuxData)
 
-Unprotected Biometric System->RefData: Given the ""subjectId"" to be compared, retrieve the corresponding protected reference template
-
-RefData-->Unprotected Biometric System: **return**\n""ByteArray"" (protected reference template)
+PolyProtect-->Unprotected Biometric System:""**return** FloatArray"" (protected query template)
 
 
-Unprotected Biometric System->PolyProtect:""**computeSimilarityScore**(ByteArray, ByteArray)""\n (corresponding to protected query and reference templates
+Unprotected Biometric System->RefData: Given the ""subjectId"" to be verified,\nretrieve the corresponding\nprotected reference template.
 
-PolyProtect-->Unprotected Biometric System:""**return**\nDouble"" (score)
+RefData-->Unprotected Biometric System: **return**\n""FloatArray"" (protected reference template)
 
+Unprotected Biometric System->PolyProtect:""**computeScore**(protectedQueryTemplate,\nprotectedReferenceTemplate)
 
-note over Unprotected Biometric System: append\n""[subjectId, score]""\nto ""identificationList""
-
-
-end
-
-note over Unprotected Biometric System: Sort\n""identificationList""\nby ""score"" and take the\nfirst N items
+PolyProtect-->Unprotected Biometric System:""**return**\nFloat""
