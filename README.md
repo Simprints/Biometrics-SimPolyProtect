@@ -4,6 +4,10 @@ In a nutshell, PolyProtect combines subject-specific secret information (also ca
 The auxiliary data consist of two parts: the coefficients (an array of signed integers excluding zero) and the exponents (an array of positive signed integers). The two arrays have the same length and they are used to perform a polynomial transformation on several slices of the input (unprotected) face template. 
 The output of this transformation is the protected template.
 
+## Publication
+
+This work has been accepted at the [2025 International Joint Conference on Biometrics](https://ijcb2025.ieee-biometrics.org/), Osaka (Japan), Sept. 8-11, 2025 ([arXiv](https://arxiv.org/abs/2508.18415)). The [full-length version](Face_and_Fingerprint_Biometric_Template_Protection_for_Edge_Devices_in_Humanitarian_Action.pdf) of the conference paper is available in this repository.
+
 # PolyProtect configuration
 
 - ```polynomialDegree: Int = 7```: degree of the polynomial used in the PolyProtect transformation. The minimum value which would provide any security is 5, since there is no closed form algebraic expression for solving polynomials of degree 5 or higher with arbitrary coefficients.
